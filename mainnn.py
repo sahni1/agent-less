@@ -24,7 +24,8 @@ def generate_pdf_report():
 
     def add_section_header(title):
         pdf.set_font('Arial', 'B', 12)
-        pdf.cell(200, 10, title, ln=True)
+        pdf.cell(200, 10, title, ln=True) 
+        #new
         pdf.ln(5)
 
     def add_text_entry(text):
