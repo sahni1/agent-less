@@ -1,0 +1,15 @@
+name: Test Script
+
+on: [push]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Run bash script
+        run: |
+          chmod +x bash.sh
+          ./bash.sh
