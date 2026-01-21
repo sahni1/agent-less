@@ -1,15 +1,36 @@
-name: Test Script
+name: Test Script on ARM64
 
-on: [push]
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
 
 jobs:
   test:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest  # Use the latest Ubuntu runner (will run inside Docker for ARM64)
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Run bash script
+      - name: Set up ARM64 environment
+        uses: docker://arm64v8/ubuntu:20.04  # Use ARM64 Ubuntu container
+
+      - name: Install dependencies and run bash script
         run: |
-          chmod +x bash.sh
-          ./bash.sh
+          # Update package list and install dependencies inside the ARM64 container
+          sudo apt update
+          sudo apt install -y curl unzip python3 jq sudo
+
+          # Copy the bash script into the container and make it executable
+          cp ./bash.sh /tmp/bash.sh
+          chmod +x /tmp/bash.sh
+
+          # Run the bash script inside ARM64 environment
+          /tmp/bash.sh
+
+      - name: Output result
+        run: echo "Script ran successfully!"
